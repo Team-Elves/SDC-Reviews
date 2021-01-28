@@ -7,7 +7,8 @@ USE sdc_reviews;
 DROP TABLE IF EXISTS reviews;
 
 CREATE TABLE reviews (
-  reviewId INT NOT NULL AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT,
+  origReviewID INT NOT NULL,
   prodId INT NOT NULL,
   ratingNum INT NOT NULL,
   reviewDate VARCHAR(100) NOT NULL,
@@ -19,34 +20,41 @@ CREATE TABLE reviews (
   reviewerEmail VARCHAR(100),
   response VARCHAR(500),
   helpfulness INT,
-  photo1 VARCHAR(300),
-  photo2 VARCHAR(300),
-  photo3 VARCHAR(300),
-  characteristicSize INT,
-  characteristicWidth INT,
-  characteristicComfort INT,
-  characteristicQuality INT,
-  characteristicLength INT,
-  characteristicFit INT,
-  PRIMARY KEY (reviewId)
+  PRIMARY KEY (id)
 );
 
-/* Heads up:
-reviews.csv has fields coming in like this:
-id,product_id,rating,date,summary,body,recommend,reported,reviewer_name,reviewer_email,response,helpfulness
+DROP TABLE IF EXISTS reviews_photos;
 
-reviews_photos.csv has fields coming in like this:
-id,review_id,url
+CREATE TABLE reviews_photos (
+  id INT NOT NULL AUTO_INCREMENT,
+  origId INT NOT NULL,
+  reviewID INT NOT NULL,
+  url VARCHAR(500),
+  PRIMARY KEY (id)
+);
 
-characteristics.csv has fields coming in like this:
-id,product_id,name
+DROP TABLE IF EXISTS characteristics;
 
-characteristic_reviews.csv has fields coming in like this:
-id,characteristic_id,review_id,value
+CREATE TABLE characteristics (
+  id INT NOT NULL AUTO_INCREMENT,
+  origId INT NOT NULL,
+  productId INT NOT NULL,
+  charName VARCHAR(20),
+  PRIMARY KEY (id)
+);
 
-...... so you can throw that schema right out the window.
+DROP TABLE IF EXISTS characteristic_reviews;
+
+CREATE TABLE characteristic_reviews (
+  id INT NOT NULL AUTO_INCREMENT,
+  origId INT NOT NULL,
+  characteristicId INT NOT NULL,
+  reviewId INT NOT NULL,
+  charValue INT,
+  PRIMARY KEY (id)
+);
 
 
 /*  Execute this file from the command line by typing:
- *    mysql -u root < pathToHereWithinRepo/schema.sql
+ *    mysql -u root -p < Schema.sql
  *  to create the database and the tables.*/
