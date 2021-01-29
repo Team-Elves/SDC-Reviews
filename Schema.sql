@@ -8,15 +8,15 @@ DROP TABLE IF EXISTS reviews;
 
 CREATE TABLE reviews (
   id INT NOT NULL AUTO_INCREMENT,
-  origReviewID INT NOT NULL,
-  prodId INT NOT NULL,
-  ratingNum INT NOT NULL,
-  reviewDate VARCHAR(100) NOT NULL,
-  summary VARCHAR(100) NOT NULL,
-  body VARCHAR(500) NOT NULL,
-  recommend INT NOT NULL,
+  origId INT,
+  prodId INT,
+  rating INT,
+  date VARCHAR(100),
+  summary VARCHAR(100),
+  body VARCHAR(500),
+  recommend INT,
   reported INT,
-  reviewerName VARCHAR(100) NOT NULL,
+  reviewerName VARCHAR(100),
   reviewerEmail VARCHAR(100),
   response VARCHAR(500),
   helpfulness INT,
@@ -27,8 +27,8 @@ DROP TABLE IF EXISTS reviews_photos;
 
 CREATE TABLE reviews_photos (
   id INT NOT NULL AUTO_INCREMENT,
-  origId INT NOT NULL,
-  reviewID INT NOT NULL,
+  origId INT,
+  reviewId INT,
   url VARCHAR(500),
   PRIMARY KEY (id)
 );
@@ -54,7 +54,35 @@ CREATE TABLE characteristic_reviews (
   PRIMARY KEY (id)
 );
 
+LOAD DATA LOCAL INFILE '/Users/CaylaCardiff 1/Desktop/Work/HackReactor/HRATX53/CodingProjects/SDC-Reviews/giantCSVs/reviews.csv'
+INTO TABLE reviews
+FIELDS TERMINATED BY ','
+-- IGNORE 5777000 LINES
+(origId, prodId, rating, date, summary, body, recommend, reported, reviewerName, reviewerEmail, response, helpfulness);
+
+LOAD DATA LOCAL INFILE '/Users/CaylaCardiff 1/Desktop/Work/HackReactor/HRATX53/CodingProjects/SDC-Reviews/giantCSVs/reviews_photos.csv'
+INTO TABLE reviews_photos
+FIELDS TERMINATED BY ','
+-- IGNORE 2742000 LINES
+(origId, reviewId, url);
+
+LOAD DATA LOCAL INFILE '/Users/CaylaCardiff 1/Desktop/Work/HackReactor/HRATX53/CodingProjects/SDC-Reviews/giantCSVs/characteristics.csv'
+INTO TABLE characteristics
+FIELDS TERMINATED BY ','
+-- IGNORE 3347000 LINES
+(origId, productId, charName);
+
+LOAD DATA LOCAL INFILE '/Users/CaylaCardiff 1/Desktop/Work/HackReactor/HRATX53/CodingProjects/SDC-Reviews/giantCSVs/characteristic_reviews.csv'
+INTO TABLE characteristic_reviews
+FIELDS TERMINATED BY ','
+-- IGNORE 19337000 LINES
+(origId, characteristicId, reviewId, charValue);
+
 
 /*  Execute this file from the command line by typing:
  *    mysql -u root -p < Schema.sql
- *  to create the database and the tables.*/
+ *  to create the database and the tables.
+ *
+ *  Re-execute this file from inside the MySQl shell by typing:
+ *  source Schema.sql;
+ */
