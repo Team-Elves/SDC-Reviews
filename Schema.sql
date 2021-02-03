@@ -8,75 +8,88 @@ DROP TABLE IF EXISTS reviews;
 
 CREATE TABLE reviews (
   id INT NOT NULL AUTO_INCREMENT,
-  origId INT,
-  prodId INT,
-  rating INT,
-  date VARCHAR(100),
-  summary VARCHAR(100),
-  body VARCHAR(500),
-  recommend INT,
-  reported INT,
-  reviewerName VARCHAR(100),
-  reviewerEmail VARCHAR(100),
+  reviewId INT NOT NULL ,
+  product INT NOT NULL,
+  rating TINYINT NOT NULL,
+  date VARCHAR(100) NOT NULL,
+  summary VARCHAR(100) NOT NULL,
+  body VARCHAR(500) NOT NULL,
+  recommend TINYINT NOT NULL,
+  reported TINYINT NOT NULL,
+  reviewerName VARCHAR(100) NOT NULL,
+  reviewerEmail VARCHAR(100) NOT NULL,
   response VARCHAR(500),
-  helpfulness INT,
+  helpfulness TINYINT NOT NULL,
   PRIMARY KEY (id)
+  INDEX (product, reviewId)
 );
 
 DROP TABLE IF EXISTS reviews_photos;
 
 CREATE TABLE reviews_photos (
   id INT NOT NULL AUTO_INCREMENT,
-  origId INT,
-  reviewId INT,
-  url VARCHAR(500),
+  photoId INT NOT NULL,
+  reviewId INT NOT NULL,
+  url VARCHAR(500) NOT NULL,
   PRIMARY KEY (id)
+  INDEX (reviewId)
 );
 
 DROP TABLE IF EXISTS characteristics;
 
 CREATE TABLE characteristics (
   id INT NOT NULL AUTO_INCREMENT,
-  origId INT NOT NULL,
+  charId INT NOT NULL,
   productId INT NOT NULL,
-  charName VARCHAR(20),
+  charName VARCHAR(20) NOT NULL,
   PRIMARY KEY (id)
+  INDEX (productId)
 );
 
 DROP TABLE IF EXISTS characteristic_reviews;
 
 CREATE TABLE characteristic_reviews (
   id INT NOT NULL AUTO_INCREMENT,
-  origId INT NOT NULL,
-  characteristicId INT NOT NULL,
+  charRevId INT NOT NULL,
+  charId INT NOT NULL,
   reviewId INT NOT NULL,
-  charValue INT,
+  charRevValue TINYINT NOT NULL,
   PRIMARY KEY (id)
+  INDEX (reviewId, charRevId)
 );
 
 LOAD DATA LOCAL INFILE '/Users/CaylaCardiff 1/Desktop/Work/HackReactor/HRATX53/CodingProjects/SDC-Reviews/giantCSVs/reviews.csv'
 INTO TABLE reviews
 FIELDS TERMINATED BY ','
--- IGNORE 5777000 LINES
-(origId, prodId, rating, date, summary, body, recommend, reported, reviewerName, reviewerEmail, response, helpfulness);
+OPTIONALLY ENCLOSED BY '"'
+-- IGNORE 5777915 LINES
+(reviewId, product, rating, date, summary, body, recommend, reported, reviewerName, reviewerEmail, response, helpfulness);
 
 LOAD DATA LOCAL INFILE '/Users/CaylaCardiff 1/Desktop/Work/HackReactor/HRATX53/CodingProjects/SDC-Reviews/giantCSVs/reviews_photos.csv'
 INTO TABLE reviews_photos
 FIELDS TERMINATED BY ','
--- IGNORE 2742000 LINES
-(origId, reviewId, url);
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '"'
+-- IGNORE 2742400 LINES
+(photoId, reviewId, url);
 
 LOAD DATA LOCAL INFILE '/Users/CaylaCardiff 1/Desktop/Work/HackReactor/HRATX53/CodingProjects/SDC-Reviews/giantCSVs/characteristics.csv'
 INTO TABLE characteristics
 FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '"'
 -- IGNORE 3347000 LINES
-(origId, productId, charName);
+(charId, productId, charName);
 
 LOAD DATA LOCAL INFILE '/Users/CaylaCardiff 1/Desktop/Work/HackReactor/HRATX53/CodingProjects/SDC-Reviews/giantCSVs/characteristic_reviews.csv'
 INTO TABLE characteristic_reviews
 FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '"'
 -- IGNORE 19337000 LINES
-(origId, characteristicId, reviewId, charValue);
+(charRevId, charId, reviewId, charRevValue);
+
+
 
 
 /*  Execute this file from the command line by typing:

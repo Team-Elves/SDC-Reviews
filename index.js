@@ -7,13 +7,41 @@ const PORT = 3000;
 const app = express();
 
 // app.use(express.static(path.join(__dirname, '..', 'public')));
-// app.use(parser.json());
-// app.use(parser.urlencoded({extended: false}));
+app.use(parser.json());
+app.use(parser.urlencoded({extended: false}));
 
 //////////// SERVER CONTROLLERS: ////////
 //// create new review:
 
-//// read reviews by id number:
+//// server test:
+app.get('/review', (req, res) => {
+  console.log('postman is at the door!')
+  res.send('Hello from the server!')
+});
+
+//// read reviews by product id number:
+app.get('/reviews/:id', (req, res) => {
+  db.getReviewsByProduct(req.params, req.query, (err, result) => {
+    if (err) {
+      console.log(err)
+      res.sendStatus(500);
+    } else {
+      res.send(result);
+    }
+  })
+})
+
+//// read metadata for review by product id number:
+app.get('/reviews/:id/meta', (req, res) => {
+  db.getMetaByProduct(req.params, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    } else {
+      res.send(result);
+    }
+  })
+})
 
 //// update review by id with response:
 
