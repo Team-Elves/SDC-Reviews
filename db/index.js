@@ -91,8 +91,24 @@ SELECT reviews.rating, reviews.recommend, characteristics.charId, characteristic
             rec++;
           }
           // characteristics:
-          chars[object.charName];
+          // if that characteristic name isn't already a property on the chars object:
+          if (!chars[object.charName]) {
+            // set it, and set up the inner values:
+            chars[object.charName] = {
+              charValuesArr: [object.charRevValue],
+              id: object.charId,
+              value: object.charRevValue
+            }
+          } else {
+            // since it does exist, push in the next value:
+            chars[object.charName].charValuesArr.push(object.charRevValue);
+          }
         })
+        // calculate averages for each characteristic, and ditch the array before sending back:
+        for (key in chars) {
+          chars[key].value = Math.floor((chars[key].charValuesArr.reduce((a, b) => a + b) / chars[key].charValuesArr.length) * 100) / 100;
+          delete chars[key].charValuesArr;
+        }
         var finalAnswer = {
           "product id": params.id,
           ratings: ratingsTallies,
