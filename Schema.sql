@@ -21,7 +21,8 @@ CREATE TABLE reviews (
   response VARCHAR(500),
   helpfulness TINYINT NOT NULL,
   PRIMARY KEY (id)
-  INDEX (product, reviewId)
+  INDEX (product)
+  INDEX (reviewId)
 );
 
 DROP TABLE IF EXISTS reviews_photos;
@@ -44,6 +45,7 @@ CREATE TABLE characteristics (
   charName VARCHAR(20) NOT NULL,
   PRIMARY KEY (id)
   INDEX (productId)
+  INDEX (charId)
 );
 
 DROP TABLE IF EXISTS characteristic_reviews;
@@ -55,7 +57,8 @@ CREATE TABLE characteristic_reviews (
   reviewId INT NOT NULL,
   charRevValue TINYINT NOT NULL,
   PRIMARY KEY (id)
-  INDEX (reviewId, charRevId)
+  INDEX (reviewId)
+  INDEX (charId)
 );
 
 LOAD DATA LOCAL INFILE '/Users/CaylaCardiff 1/Desktop/Work/HackReactor/HRATX53/CodingProjects/SDC-Reviews/giantCSVs/reviews.csv'
