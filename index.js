@@ -1,4 +1,4 @@
-// require('newrelic');
+require('newrelic');
 const express = require('express');
 const db = require('./db/index.js');
 const path = require('path');
