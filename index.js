@@ -1,4 +1,4 @@
-require('newrelic');
+// require('newrelic');
 const express = require('express');
 const db = require('./db/index.js');
 const path = require('path');
@@ -16,7 +16,6 @@ app.use(parser.urlencoded({extended: false}));
 
 //// server test:
 app.get('/review', (req, res) => {
-  console.log('postman is at the door!')
   res.send('Hello from the server!')
 });
 
